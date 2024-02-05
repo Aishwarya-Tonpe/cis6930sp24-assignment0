@@ -185,7 +185,9 @@ def status():
     data = statement.fetchall()
     # print("**********", data)
     filtered_data = [entry for entry in data if entry[0] != 'Nature']
-    sorted_data = sorted(filtered_data, key=lambda x: (-x[1], x[0] or 'ZZZZZ'))
+    empty_entry = [entry for entry in data if entry[0] == '']
+    sorted_data = sorted(filtered_data, key=lambda x: (-x[1], x[0]))
+    sorted_data.append(empty_entry[0])
 
     return sorted_data
 
@@ -193,6 +195,7 @@ def print_status():
     sorted_data = status()
     # print("^^^^^^^^^", sorted_data)
     for data in sorted_data:
+        # print("******", data)
         print(data[0] + "|" +  str(data[1]))
 
 def getdb():
