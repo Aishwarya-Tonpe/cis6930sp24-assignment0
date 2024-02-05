@@ -35,6 +35,7 @@ def extract_data_from_pdf(pdf_path):
 
     # print("mmmmmm", text)
     lines = text.splitlines()
+    lines = lines[2:]
 
     data = []
     for l in lines:
@@ -80,7 +81,24 @@ def extract_data_from_pdf(pdf_path):
                         # Append the data to the list
                         data.append(extracted_data)
                     else:
-                        print("IN ELSE", non_empty_list)
+                        # print("IN ELSE", non_empty_list)
+                        is_alpha = False
+                        nature = ""
+                        for entry in non_empty_list:
+                            if(entry.isalpha()):
+                                is_alpha = True
+                                nature = entry
+
+                        # print("in here also 44444444")
+                        extracted_data = {
+                            'DateTime': "",
+                            'IncidentNumber': "",
+                            'Location': "",
+                            'nature' : "",
+                            'IncidentType': ""
+                        }
+
+                        data.append(extracted_data)
 
             else:
                 matched_lines =  [l.strip()]
@@ -112,6 +130,18 @@ def extract_data_from_pdf(pdf_path):
 
                     # Append the data to the list
                     data.append(extracted_data)
+
+                else:
+                    for entry in non_empty_list:
+                        if(entry.isalpha()):
+                            extracted_data = {
+                                'DateTime': "",
+                                'IncidentNumber': "",
+                                'Location': "",
+                                'nature' : "",
+                                'IncidentType': ""
+                            }
+                            data.append(extracted_data)
 
     return data
 
@@ -153,12 +183,14 @@ def status():
     (cur, con) = connectdb()
     statement = cur.execute(queryString)
     data = statement.fetchall()
-    sorted_data = sorted(data, key=lambda x: (-x[1], x[0]))
+    # print("**********", data)
+    sorted_data = sorted(data, key=lambda x: (-x[1], x[0] or 'ZZZZZ'))
+
     return sorted_data
 
 def print_status():
     sorted_data = status()
-    print("^^^^^^^^^", sorted_data)
+    # print("^^^^^^^^^", sorted_data)
     for data in sorted_data:
         print(data[0] + "|" +  str(data[1]))
 
