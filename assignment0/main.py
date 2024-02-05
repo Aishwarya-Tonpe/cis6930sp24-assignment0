@@ -7,8 +7,6 @@ import urllib
 import urllib.request
 
 def download_data(url):
-    # url = ("https://www.normanok.gov/sites/default/files/documents/"
-    #        "2024-01/2024-01-01_daily_incident_summary.pdf")
     headers = {}
     headers['User-Agent'] = "Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.17 (KHTML, like Gecko) Chrome/24.0.1312.27 Safari/537.17"
 
@@ -39,14 +37,6 @@ def extract_data_from_pdf(pdf_path):
 
     data = []
     for l in lines:
-        # print("^^^^^^^^^^", l)
-        # pattern = re.compile(r'(\d+/\d+/\d+ \d+:\d+) (\d+-\d+) (\w+ \w+.+?) (\w+ \w+)')
-
-        # Use findall to capture groups in the pattern
-        # matches = pattern.findall(l)
-        # pattern = re.compile(r'\d+/\d+/\d+ \d+:\d+ \d+-\d+ \w+ \w+.*?(?:\n|$)')
-        # matches = re.findall(pattern, l)
-        # print("{{{{{{{{{{", matches)
         if(l != ""):
             # print("++++++++++", re.split("   ", l))
 
@@ -114,42 +104,6 @@ def extract_data_from_pdf(pdf_path):
                     # Append the data to the list
                     data.append(extracted_data)
 
-
-
-    # Define a regular expression pattern to match the desired format
-    # pattern = re.compile(r'\d+/\d+/\d+ \d+:\d+ \d+-\d+ \w+ \w+.*?(?:\n|$)')
-    #
-    # # Find all matches in the extracted text
-    # matches = re.findall(pattern, text)
-    # print("^^^^^^^^^", matches)
-
-    # Process the matches and extract relevant information
-    # data = []
-    # for match in matches:
-    #     # Split the matched string into fields using whitespace
-    #     fields = re.split(r'\s{1,}', match)
-    #     print("#######", fields)
-    #
-    #     # Extract relevant information (modify as needed)
-    #     date_time = fields[0] + ' ' + fields[1]
-    #     incident_number = fields[2]
-    #     location = ' '.join(fields[3:-4])
-    #     nature = fields[-3]
-    #     incident_type = fields[-2]
-    #
-    #     # Create a dictionary or a tuple with the extracted information
-    #     extracted_data = {
-    #         'DateTime': date_time,
-    #         'IncidentNumber': incident_number,
-    #         'Location': location,
-    #         'nature' : nature,
-    #         'IncidentType': incident_type
-    #     }
-    #
-    #     # Append the data to the list
-    #     data.append(extracted_data)
-
-    # print("DAATTATATA", data)
     return data
 
 def connectdb():
@@ -164,29 +118,22 @@ def createdb():
 
 def populatedb(result : list[dict[str, str]]):
     (cur, con) = connectdb()
-    # print("!!!!!!!!!!!!", result)
     queryString = "INSERT INTO incidents VALUES "
     for entry in result:
         queryString =  queryString + "(" + "\'" + entry.get("DateTime") + "\'" + "," +  "\'" + entry.get("IncidentNumber") + "\'" + "," + "\'" + entry.get("Location") + "\'" + "," + "\'" + entry.get("nature") + "\'" + "," + "\'" + entry.get("IncidentType") + "\'" + ")" + ","
 
     queryString = queryString[: -1]
 
-    # print("&&&&&", queryString)
     statement = cur.execute(queryString)
     con.commit()
     return statement.rowcount
 
 def status():
-    # data = getdb()
     queryString = "SELECT nature, COUNT(*) AS nature_count FROM incidents GROUP BY nature"
     (cur, con) = connectdb()
     statement = cur.execute(queryString)
-    # print("^^^^^^^^$$$$$", statement.fetchall())
     data = statement.fetchall()
-    # sorted_date = []
-    # print("data", data)
     sorted_data = sorted(data, key=lambda x: (-x[1], x[0]))
-    # print("======", sorted_data)
     return sorted_data
 
 def print_status():
@@ -197,7 +144,6 @@ def print_status():
 def getdb():
     (cur, con) = connectdb()
     statement = cur.execute("SELECT * FROM incidents")
-    # print("%%%%%", statement.fetchall())
     return statement.fetchall()
 
 def deletedb():
@@ -212,10 +158,7 @@ def execute_functions(url):
     createdb()
     populatedb(result)
     print_status()
-    getdb()
-
-# url = "https://www.normanok.gov/sites/default/files/documents/2024-01/2024-01-01_daily_incident_summary.pdf"
-# execute_functions(url)
+    # getdb()
 
 def main():
     # Create an ArgumentParser object
