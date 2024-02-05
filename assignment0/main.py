@@ -10,7 +10,7 @@ def download_data(url):
     headers['User-Agent'] = "Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.17 (KHTML, like Gecko) Chrome/24.0.1312.27 Safari/537.17"
 
     data = urllib.request.urlopen(urllib.request.Request(url, headers=headers)).read()
-    local_file_path = "/Users/aishwaryatonpe/IdeaProjects/cis6930sp24-assignment0/dwpdf.pdf"
+    local_file_path = "dwpdf.pdf"
     with open(local_file_path, "wb") as local_file:
         local_file.write(data)
 
