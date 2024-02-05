@@ -217,7 +217,7 @@ def execute_functions(url):
 def delete_pdf(pdf_path):
     try:
         os.remove(pdf_path)
-        print(f"Deleted PDF file: {pdf_path}")
+        # print(f"Deleted PDF file: {pdf_path}")
     except FileNotFoundError:
         print(f"PDF file not found: {pdf_path}")
 
