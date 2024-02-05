@@ -63,7 +63,10 @@ def extract_data_from_pdf(pdf_path):
                         date_time = non_empty_list[0].strip()
                         incident_number = non_empty_list[1].strip()
                         location = non_empty_list[2].strip()
-                        nature = non_empty_list[3].strip()
+                        # print("NATURE", non_empty_list[3])
+                        if(non_empty_list[3] != " "):
+                            nature = non_empty_list[3].strip()
+                        else: nature = non_empty_list[3]
                         incident_type = non_empty_list[4].strip()
 
                         extracted_data = {
@@ -76,6 +79,8 @@ def extract_data_from_pdf(pdf_path):
 
                         # Append the data to the list
                         data.append(extracted_data)
+                    else:
+                        print("IN ELSE", non_empty_list)
 
             else:
                 matched_lines =  [l.strip()]
@@ -91,7 +96,10 @@ def extract_data_from_pdf(pdf_path):
                     date_time = non_empty_list[0].strip()
                     incident_number = non_empty_list[1].strip()
                     location = non_empty_list[2].strip()
-                    nature = non_empty_list[3].strip()
+                    # print("NATURE", non_empty_list[3])
+                    if(non_empty_list[3] != " "):
+                        nature = non_empty_list[3].strip()
+                    else: nature = non_empty_list[3]
                     incident_type = non_empty_list[4].strip()
 
                     extracted_data = {
@@ -108,8 +116,19 @@ def extract_data_from_pdf(pdf_path):
     return data
 
 def connectdb():
-    con = sqlite3.connect("normanpd.db")
+    # Get the path to the 'resources' folder
+    resources_folder = os.path.join(os.path.dirname(__file__), '/Users/aishwaryatonpe/IdeaProjects/cis6930sp24-assignment0/resources')
+
+    # Ensure that the 'resources' folder exists
+    os.makedirs(resources_folder, exist_ok=True)
+
+    # Specify the complete path to the SQLite database file
+    db_path = os.path.join(resources_folder, 'normanpd.db')
+
+    # Connect to the database
+    con = sqlite3.connect(db_path)
     cur = con.cursor()
+
     return (cur, con)
 
 def createdb():
@@ -139,6 +158,7 @@ def status():
 
 def print_status():
     sorted_data = status()
+    print("^^^^^^^^^", sorted_data)
     for data in sorted_data:
         print(data[0] + "|" +  str(data[1]))
 
