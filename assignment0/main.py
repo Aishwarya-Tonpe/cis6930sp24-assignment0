@@ -184,7 +184,8 @@ def status():
     statement = cur.execute(queryString)
     data = statement.fetchall()
     # print("**********", data)
-    sorted_data = sorted(data, key=lambda x: (-x[1], x[0] or 'ZZZZZ'))
+    filtered_data = [entry for entry in data if entry[0] != 'Nature']
+    sorted_data = sorted(filtered_data, key=lambda x: (-x[1], x[0] or 'ZZZZZ'))
 
     return sorted_data
 
