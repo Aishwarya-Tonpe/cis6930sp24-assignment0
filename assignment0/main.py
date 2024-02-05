@@ -159,7 +159,7 @@ def execute_functions(url):
     createdb()
     populatedb(result)
     print_status()
-    # delete_pdf(pdf)
+    delete_pdf(pdf)
     # getdb()
 
 def delete_pdf(pdf_path):
