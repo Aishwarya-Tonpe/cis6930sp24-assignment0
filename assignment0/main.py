@@ -1,4 +1,3 @@
-import io
 import pypdf
 import re
 import sqlite3
