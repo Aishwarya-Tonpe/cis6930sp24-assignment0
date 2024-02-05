@@ -159,7 +159,7 @@ def execute_functions(url):
     createdb()
     populatedb(result)
     print_status()
-    delete_pdf(pdf)
+    # delete_pdf(pdf)
     # getdb()
 
 def delete_pdf(pdf_path):
@@ -182,7 +182,6 @@ def main():
     # Check if the --incidents argument is provided
     if args.incidents:
         url = args.incidents
-        url = "https://www.normanok.gov/sites/default/files/documents/2024-01/2024-01-01_daily_incident_summary.pdf"
         execute_functions(url)
         # Now you can use the 'url' variable in your code
 
