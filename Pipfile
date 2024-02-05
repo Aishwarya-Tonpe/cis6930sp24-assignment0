@@ -4,12 +4,13 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-PyPDF2 = "*"
+pypdf = "*"
 pytest = "*"
 pytest-cov = "*"
 pytest-mock = "*"
 requests = "*"
 argparse = "*"
+sqlite3 = "*"
 
 [dev-packages]
 
