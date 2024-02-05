@@ -196,7 +196,7 @@ def status():
     filtered_data = [entry for entry in data if entry[0] != '']
     sorted_data = sorted(filtered_data, key=lambda x: (-x[1], x[0]))
     # print("empty rntry", empty_entry)
-    sorted_data.append(empty_entry[0])
+    if(len(empty_entry) != 0): sorted_data.append(empty_entry[0])
 
     return sorted_data
 
