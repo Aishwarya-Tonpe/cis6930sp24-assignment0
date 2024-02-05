@@ -1,3 +1,5 @@
+import os
+
 import pypdf
 import re
 import sqlite3
@@ -157,7 +159,15 @@ def execute_functions(url):
     createdb()
     populatedb(result)
     print_status()
+    delete_pdf(pdf)
     # getdb()
+
+def delete_pdf(pdf_path):
+    try:
+        os.remove(pdf_path)
+        print(f"Deleted PDF file: {pdf_path}")
+    except FileNotFoundError:
+        print(f"PDF file not found: {pdf_path}")
 
 def main():
     # Create an ArgumentParser object
