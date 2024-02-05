@@ -36,6 +36,7 @@ def extract_data_from_pdf(pdf_path):
     # print("mmmmmm", text)
     lines = text.splitlines()
     lines = lines[2:]
+    lines = lines[:-1]
 
     data = []
     for l in lines:
@@ -89,12 +90,12 @@ def extract_data_from_pdf(pdf_path):
                                 is_alpha = True
                                 nature = entry
 
-                        # print("in here also 44444444")
+                        # print("in here also 44444444", non_empty_list)
                         extracted_data = {
                             'DateTime': "",
                             'IncidentNumber': "",
                             'Location': "",
-                            'nature' : "",
+                            'nature' : nature,
                             'IncidentType': ""
                         }
 
@@ -132,16 +133,22 @@ def extract_data_from_pdf(pdf_path):
                     data.append(extracted_data)
 
                 else:
+                    nature = ""
                     for entry in non_empty_list:
                         if(entry.isalpha()):
-                            extracted_data = {
-                                'DateTime': "",
-                                'IncidentNumber': "",
-                                'Location': "",
-                                'nature' : "",
-                                'IncidentType': ""
-                            }
-                            data.append(extracted_data)
+                            is_alpha = True
+                            nature = entry
+
+                    # print("in here also 44444444")
+                    extracted_data = {
+                        'DateTime': "",
+                        'IncidentNumber': "",
+                        'Location': "",
+                        'nature' : nature,
+                        'IncidentType': ""
+                    }
+
+                    data.append(extracted_data)
 
     return data
 
@@ -186,7 +193,9 @@ def status():
     # print("**********", data)
     filtered_data = [entry for entry in data if entry[0] != 'Nature']
     empty_entry = [entry for entry in data if entry[0] == '']
+    filtered_data = [entry for entry in data if entry[0] != '']
     sorted_data = sorted(filtered_data, key=lambda x: (-x[1], x[0]))
+    print("empty rntry", empty_entry)
     sorted_data.append(empty_entry[0])
 
     return sorted_data
