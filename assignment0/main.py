@@ -191,7 +191,7 @@ def status():
     statement = cur.execute(queryString)
     data = statement.fetchall()
     # print("**********", data)
-    filtered_data = [entry for entry in data if entry[0] != 'Nature']
+    filtered_data = [entry for entry in data if entry[0] != 'Nature'.casefold()]
     empty_entry = [entry for entry in data if entry[0] == '']
     filtered_data = [entry for entry in data if entry[0] != '']
     sorted_data = sorted(filtered_data, key=lambda x: (-x[1], x[0]))
