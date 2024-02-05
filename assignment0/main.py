@@ -117,16 +117,16 @@ def extract_data_from_pdf(pdf_path):
 
 def connectdb():
     # Get the path to the 'resources' folder
-    resources_folder = os.path.join(os.path.dirname(__file__), '/Users/aishwaryatonpe/IdeaProjects/cis6930sp24-assignment0/resources')
-
-    # Ensure that the 'resources' folder exists
-    os.makedirs(resources_folder, exist_ok=True)
-
-    # Specify the complete path to the SQLite database file
-    db_path = os.path.join(resources_folder, 'normanpd.db')
+    # resources_folder = os.path.join(os.path.dirname(__file__), '/Users/aishwaryatonpe/IdeaProjects/cis6930sp24-assignment0/resources')
+    #
+    # # Ensure that the 'resources' folder exists
+    # os.makedirs(resources_folder, exist_ok=True)
+    #
+    # # Specify the complete path to the SQLite database file
+    # db_path = os.path.join(resources_folder, 'normanpd.db')
 
     # Connect to the database
-    con = sqlite3.connect(db_path)
+    con = sqlite3.connect("resources/normanpd.db")
     cur = con.cursor()
 
     return (cur, con)
