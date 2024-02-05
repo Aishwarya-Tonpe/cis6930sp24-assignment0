@@ -1,5 +1,5 @@
 import pytest
-from main import connectdb
+from assignment0.main import createdb, connectdb, deletedb
 
 def test_connectdb():
     cur, con = connectdb()

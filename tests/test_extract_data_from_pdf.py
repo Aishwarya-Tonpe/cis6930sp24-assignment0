@@ -1,5 +1,5 @@
 import pytest
-from main import extract_data_from_pdf
+from assignment0.main import createdb, connectdb, deletedb, extract_data_from_pdf
 
 @pytest.mark.parametrize("pdf_path, expected_count", [
     ("/Users/aishwaryatonpe/Downloads/2024-01-04_daily_incident_summary.pdf", 336),  # Update with actual paths and expected counts

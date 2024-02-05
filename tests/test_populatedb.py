@@ -1,5 +1,5 @@
 import pytest
-from main import populatedb, connectdb
+from assignment0.main import createdb, connectdb, deletedb, populatedb
 
 def test_populatedb():
     expected_count = 336

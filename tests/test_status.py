@@ -1,5 +1,5 @@
 import pytest
-from main import populatedb, connectdb, print_status
+from assignment0.main import createdb, connectdb, deletedb, print_status
 
 def test_populatedb():
     sorted_data = print_status()

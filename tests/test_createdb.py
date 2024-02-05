@@ -1,5 +1,5 @@
 import pytest
-from main import createdb, connectdb, deletedb
+from assignment0.main import createdb, connectdb, deletedb
 
 def test_createdb():
     deletedb()
