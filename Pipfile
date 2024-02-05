@@ -4,6 +4,12 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+PyPDF2 = "*"
+pytest = "*"
+pytest-cov = "*"
+pytest-mock = "*"
+requests = "*"
+argparse = "*"
 
 [dev-packages]
 
