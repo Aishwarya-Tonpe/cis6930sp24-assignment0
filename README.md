@@ -1,17 +1,23 @@
-# NAME: AISHWARYA TONPE
+## NAME: AISHWARYA TONPE
 
-# ASSIGNMENT DESCRIPTION:
+## ASSIGNMENT DESCRIPTION:
 THIS IS ASSIGNMENT 0 IN THE CIS6930 DATA ENGINEERING COURSE. THE ASSIGNMENT FOCUSES ON EXTRACTING DATA. IN THIS ASSIGNMENT
 GRAB AN INCIDENTS PDF FILE FORM THE NORMAN, OKLAHAMA POLICE DEPARTMENT'S WEBSITE AND THEN EXTRACT THE DATA FROM THIS PDF
 AND PRINT OUT THE DIFFERENT CATEGORIES OF THE INCIDENTS.
 
 
-# How to install
+## How to install
 pipenv install
 
 ## How to run
+Command to run: 
 pipenv run python assignment0/main.py --incidents https://www.normanok.gov/sites/default/files/documents/2024-01/2024-01-08_daily_incident_summary.pdf
-Video -
+Video:
+
+
+https://github.com/Aishwarya-Tonpe/cis6930sp24-assignment0/assets/44273433/c818b90c-2d37-442a-af1e-7b4e08b56f5c
+
+
 
 ## Functions
 #### main.py \
