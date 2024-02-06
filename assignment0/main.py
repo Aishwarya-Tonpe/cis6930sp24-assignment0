@@ -49,92 +49,126 @@ def extract_data_from_pdf(pdf_path):
                 for ml in matched_lines:
                     split_line = re.split("   ", ml)
                     non_empty_list = [value for value in split_line if value is not None and value != ""]
-                    if(len(non_empty_list) == 5):
-                        categories = ["Date/Time", "Incident Number", "Location", "Nature", "Incident ORI"]
-                        date_time = non_empty_list[0].strip()
-                        incident_number = non_empty_list[1].strip()
-                        location = non_empty_list[2].strip()
-                        if(non_empty_list[3] != " "):
-                            nature = non_empty_list[3].strip()
-                        else: nature = non_empty_list[3]
-                        incident_type = non_empty_list[4].strip()
-
-                        extracted_data = {
-                            'DateTime': date_time,
-                            'IncidentNumber': incident_number,
-                            'Location': location,
-                            'nature' : nature,
-                            'IncidentType': incident_type
-                        }
-
-                        # Append the data to the list
-                        data.append(extracted_data)
-                    else:
-                        is_alpha = False
-                        nature = ""
-                        for entry in non_empty_list:
-                            if(entry.isalpha()):
-                                is_alpha = True
-                                nature = entry
-
-                        extracted_data = {
-                            'DateTime': "",
-                            'IncidentNumber': "",
-                            'Location': "",
-                            'nature' : nature,
-                            'IncidentType': ""
-                        }
-
-                        data.append(extracted_data)
+                    extract_fields(non_empty_list, data)
+                    # if(len(non_empty_list) == 5):
+                    #     categories = ["Date/Time", "Incident Number", "Location", "Nature", "Incident ORI"]
+                    #     date_time = non_empty_list[0].strip()
+                    #     incident_number = non_empty_list[1].strip()
+                    #     location = non_empty_list[2].strip()
+                    #     if(non_empty_list[3] != " "):
+                    #         nature = non_empty_list[3].strip()
+                    #     else: nature = non_empty_list[3]
+                    #     incident_type = non_empty_list[4].strip()
+                    #
+                    #     extracted_data = {
+                    #         'DateTime': date_time,
+                    #         'IncidentNumber': incident_number,
+                    #         'Location': location,
+                    #         'nature' : nature,
+                    #         'IncidentType': incident_type
+                    #     }
+                    #
+                    #     # Append the data to the list
+                    #     data.append(extracted_data)
+                    # else:
+                    #     nature = ""
+                    #     for entry in non_empty_list:
+                    #         if(entry.isalpha()):
+                    #             nature = entry
+                    #
+                    #     extracted_data = {
+                    #         'DateTime': "",
+                    #         'IncidentNumber': "",
+                    #         'Location': "",
+                    #         'nature' : nature,
+                    #         'IncidentType': ""
+                    #     }
+                    #
+                    #     data.append(extracted_data)
 
             else:
                 matched_lines =  [l.strip()]
                 split_line = re.split("   ", l)
 
                 non_empty_list = [value for value in split_line if value is not None and value != ""]
-                if(len(non_empty_list) == 5):
-                    categories = ["Date/Time", "Incident Number", "Location", "Nature", "Incident ORI"]
-                    date_time = non_empty_list[0].strip()
-                    incident_number = non_empty_list[1].strip()
-                    location = non_empty_list[2].strip()
-                    # print("NATURE", non_empty_list[3])
-                    if(non_empty_list[3] != " "):
-                        nature = non_empty_list[3].strip()
-                    else: nature = non_empty_list[3]
-                    incident_type = non_empty_list[4].strip()
+                extract_fields(non_empty_list, data)
 
-                    extracted_data = {
-                        'DateTime': date_time,
-                        'IncidentNumber': incident_number,
-                        'Location': location,
-                        'nature' : nature,
-                        'IncidentType': incident_type
-                    }
-
-                    # Append the data to the list
-                    data.append(extracted_data)
-
-                else:
-                    nature = ""
-                    for entry in non_empty_list:
-                        if(entry.isalpha()):
-                            is_alpha = True
-                            nature = entry
-
-                    extracted_data = {
-                        'DateTime': "",
-                        'IncidentNumber': "",
-                        'Location': "",
-                        'nature' : nature,
-                        'IncidentType': ""
-                    }
-
-                    data.append(extracted_data)
+                # if(len(non_empty_list) == 5):
+                #     categories = ["Date/Time", "Incident Number", "Location", "Nature", "Incident ORI"]
+                #     date_time = non_empty_list[0].strip()
+                #     incident_number = non_empty_list[1].strip()
+                #     location = non_empty_list[2].strip()
+                #     if(non_empty_list[3] != " "):
+                #         nature = non_empty_list[3].strip()
+                #     else: nature = non_empty_list[3]
+                #     incident_type = non_empty_list[4].strip()
+                #
+                #     extracted_data = {
+                #         'DateTime': date_time,
+                #         'IncidentNumber': incident_number,
+                #         'Location': location,
+                #         'nature' : nature,
+                #         'IncidentType': incident_type
+                #     }
+                #
+                #     # Append the data to the list
+                #     data.append(extracted_data)
+                #
+                # else:
+                #     nature = ""
+                #     for entry in non_empty_list:
+                #         if(entry.isalpha()):
+                #             nature = entry
+                #
+                #     extracted_data = {
+                #         'DateTime': "",
+                #         'IncidentNumber': "",
+                #         'Location': "",
+                #         'nature' : nature,
+                #         'IncidentType': ""
+                #     }
+                #
+                #     data.append(extracted_data)
 
     return data
 
-# def extract_fields():
+def extract_fields(non_empty_list, data):
+    if(len(non_empty_list) == 5):
+        categories = ["Date/Time", "Incident Number", "Location", "Nature", "Incident ORI"]
+        date_time = non_empty_list[0].strip()
+        incident_number = non_empty_list[1].strip()
+        location = non_empty_list[2].strip()
+        if(non_empty_list[3] != " "):
+            nature = non_empty_list[3].strip()
+        else: nature = non_empty_list[3]
+        incident_type = non_empty_list[4].strip()
 
+        extracted_data = {
+            'DateTime': date_time,
+            'IncidentNumber': incident_number,
+            'Location': location,
+            'nature' : nature,
+            'IncidentType': incident_type
+        }
+
+        # Append the data to the list
+        data.append(extracted_data)
+
+    else:
+        nature = ""
+        for entry in non_empty_list:
+            if(entry.isalpha()):
+                nature = entry
+
+        extracted_data = {
+            'DateTime': "",
+            'IncidentNumber': "",
+            'Location': "",
+            'nature' : nature,
+            'IncidentType': ""
+        }
+
+        data.append(extracted_data)
 
 def connectdb():
     con = sqlite3.connect(strings.dbstrings["db_path"])
