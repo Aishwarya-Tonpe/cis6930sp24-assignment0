@@ -10,6 +10,7 @@ AND PRINT OUT THE DIFFERENT CATEGORIES OF THE INCIDENTS.
 pipenv install
 
 ## How to run
+Branch to be used: `main`
 Command to run: 
 pipenv run python assignment0/main.py --incidents https://www.normanok.gov/sites/default/files/documents/2024-01/2024-01-08_daily_incident_summary.pdf
 Video:
