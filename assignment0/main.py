@@ -177,7 +177,7 @@ def populatedb(result : list[dict[str, str]]):
     (cur, con) = connectdb()
     queryString = "INSERT INTO incidents VALUES "
     for entry in result:
-        queryString =  queryString + "(" + "\'" + entry.get("DateTime") + "\'" + "," +  "\'" + entry.get("IncidentNumber") + "\'" + "," + "\'" + entry.get("Location") + "\'" + "," + "\'" + entry.get("nature") + "\'" + "," + "\'" + entry.get("IncidentType") + "\'" + ")" + ","
+        queryString = queryString + "(" + "\'" + entry.get("DateTime") + "\'" + "," +  "\'" + entry.get("IncidentNumber") + "\'" + "," + "\'" + entry.get("Location") + "\'" + "," + "\'" + entry.get("nature") + "\'" + "," + "\'" + entry.get("IncidentType") + "\'" + ")" + ","
 
     queryString = queryString[: -1]
 
@@ -191,10 +191,12 @@ def status():
     statement = cur.execute(queryString)
     data = statement.fetchall()
     # print("**********", data)
-    filtered_data = [entry for entry in data if entry[0] != 'Nature' or entry[0] != 'NATURE']
-    empty_entry = [entry for entry in data if entry[0] == '']
-    filtered_data = [entry for entry in data if entry[0] != '']
-    sorted_data = sorted(filtered_data, key=lambda x: (-x[1], x[0]))
+    filtered_data_nature = [entry for entry in data if entry[0] != 'Nature' and entry[0] != 'NATURE']
+    # for e in data:
+        # print("77777777", e[0])
+    empty_entry = [entry for entry in filtered_data_nature if entry[0] == '']
+    filtered_data_empty_entry = [entry for entry in filtered_data_nature if entry[0] != '']
+    sorted_data = sorted(filtered_data_empty_entry, key=lambda x: (-x[1], x[0]))
     # print("empty rntry", empty_entry)
     if(len(empty_entry) != 0): sorted_data.append(empty_entry[0])
 
