@@ -6,7 +6,7 @@ import sqlite3
 import argparse
 import urllib
 import urllib.request
-from assignment0.constants import strings
+from constants import strings
 
 def download_data(url):
     headers = {}
@@ -50,41 +50,6 @@ def extract_data_from_pdf(pdf_path):
                     split_line = re.split("   ", ml)
                     non_empty_list = [value for value in split_line if value is not None and value != ""]
                     extract_fields(non_empty_list, data)
-                    # if(len(non_empty_list) == 5):
-                    #     categories = ["Date/Time", "Incident Number", "Location", "Nature", "Incident ORI"]
-                    #     date_time = non_empty_list[0].strip()
-                    #     incident_number = non_empty_list[1].strip()
-                    #     location = non_empty_list[2].strip()
-                    #     if(non_empty_list[3] != " "):
-                    #         nature = non_empty_list[3].strip()
-                    #     else: nature = non_empty_list[3]
-                    #     incident_type = non_empty_list[4].strip()
-                    #
-                    #     extracted_data = {
-                    #         'DateTime': date_time,
-                    #         'IncidentNumber': incident_number,
-                    #         'Location': location,
-                    #         'nature' : nature,
-                    #         'IncidentType': incident_type
-                    #     }
-                    #
-                    #     # Append the data to the list
-                    #     data.append(extracted_data)
-                    # else:
-                    #     nature = ""
-                    #     for entry in non_empty_list:
-                    #         if(entry.isalpha()):
-                    #             nature = entry
-                    #
-                    #     extracted_data = {
-                    #         'DateTime': "",
-                    #         'IncidentNumber': "",
-                    #         'Location': "",
-                    #         'nature' : nature,
-                    #         'IncidentType': ""
-                    #     }
-                    #
-                    #     data.append(extracted_data)
 
             else:
                 matched_lines =  [l.strip()]
@@ -92,43 +57,6 @@ def extract_data_from_pdf(pdf_path):
 
                 non_empty_list = [value for value in split_line if value is not None and value != ""]
                 extract_fields(non_empty_list, data)
-
-                # if(len(non_empty_list) == 5):
-                #     categories = ["Date/Time", "Incident Number", "Location", "Nature", "Incident ORI"]
-                #     date_time = non_empty_list[0].strip()
-                #     incident_number = non_empty_list[1].strip()
-                #     location = non_empty_list[2].strip()
-                #     if(non_empty_list[3] != " "):
-                #         nature = non_empty_list[3].strip()
-                #     else: nature = non_empty_list[3]
-                #     incident_type = non_empty_list[4].strip()
-                #
-                #     extracted_data = {
-                #         'DateTime': date_time,
-                #         'IncidentNumber': incident_number,
-                #         'Location': location,
-                #         'nature' : nature,
-                #         'IncidentType': incident_type
-                #     }
-                #
-                #     # Append the data to the list
-                #     data.append(extracted_data)
-                #
-                # else:
-                #     nature = ""
-                #     for entry in non_empty_list:
-                #         if(entry.isalpha()):
-                #             nature = entry
-                #
-                #     extracted_data = {
-                #         'DateTime': "",
-                #         'IncidentNumber': "",
-                #         'Location': "",
-                #         'nature' : nature,
-                #         'IncidentType': ""
-                #     }
-                #
-                #     data.append(extracted_data)
 
     return data
 
@@ -144,11 +72,11 @@ def extract_fields(non_empty_list, data):
         incident_type = non_empty_list[4].strip()
 
         extracted_data = {
-            'DateTime': date_time,
-            'IncidentNumber': incident_number,
-            'Location': location,
-            'nature' : nature,
-            'IncidentType': incident_type
+            strings.field_names["date_time"]: date_time,
+            strings.field_names["incident_number"]: incident_number,
+            strings.field_names["location"]: location,
+            strings.field_names["nature"] : nature,
+            strings.field_names["incident_type"]: incident_type
         }
 
         # Append the data to the list
@@ -161,11 +89,11 @@ def extract_fields(non_empty_list, data):
                 nature = entry
 
         extracted_data = {
-            'DateTime': "",
-            'IncidentNumber': "",
-            'Location': "",
-            'nature' : nature,
-            'IncidentType': ""
+            strings.field_names["date_time"] : "",
+            strings.field_names["incident_number"] : "",
+            strings.field_names["location"] : "",
+            strings.field_names["nature"] : nature,
+            strings.field_names["incident_type"]: ""
         }
 
         data.append(extracted_data)
@@ -178,13 +106,11 @@ def connectdb():
 
 def createdb():
     (cur, con) = connectdb()
-    # statement = cur.execute("CREATE TABLE incidents (incident_time TEXT,incident_number TEXT,incident_location TEXT, nature TEXT, incident_ori TEXT)")
     statement = cur.execute(strings.dbstrings["create_db"])
     return statement
 
 def populatedb(result : list[dict[str, str]]):
     (cur, con) = connectdb()
-    # queryString = "INSERT INTO incidents VALUES "
     query_string = strings.dbstrings["insert_db"]
     for entry in result:
         query_string = query_string + "(" + "\'" + entry.get(strings.field_names["date_time"]) + "\'" + "," +  "\'" + entry.get(strings.field_names["incident_number"]) + "\'" + "," + "\'" + entry.get(strings.field_names["location"]) + "\'" + "," + "\'" + entry.get(strings.field_names["nature"]) + "\'" + "," + "\'" + entry.get(strings.field_names["incident_type"]) + "\'" + ")" + ","
