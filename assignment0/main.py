@@ -191,7 +191,7 @@ def status():
     statement = cur.execute(queryString)
     data = statement.fetchall()
     # print("**********", data)
-    filtered_data_nature = [entry for entry in data if entry[0] != 'Nature' and entry[0] != 'NATURE']
+    filtered_data_nature = [entry for entry in data if entry[0] != 'Nature' and entry[0] != 'NATURE' and entry[0] != 'RAMP']
     # for e in data:
         # print("77777777", e[0])
     empty_entry = [entry for entry in filtered_data_nature if entry[0] == '']
