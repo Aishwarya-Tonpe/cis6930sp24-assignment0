@@ -1,5 +1,6 @@
 import pytest
 from assignment0.main import createdb, connectdb, deletedb, print_status, populatedb
+from assignment0.constants import strings
 
 @pytest.mark.parametrize("expected_output", [
     ("""Traffic Stop|78

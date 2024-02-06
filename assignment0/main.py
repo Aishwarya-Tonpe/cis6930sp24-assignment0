@@ -6,34 +6,27 @@ import sqlite3
 import argparse
 import urllib
 import urllib.request
+from assignment0.constants import strings
 
 def download_data(url):
     headers = {}
     headers['User-Agent'] = "Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.17 (KHTML, like Gecko) Chrome/24.0.1312.27 Safari/537.17"
 
     data = urllib.request.urlopen(urllib.request.Request(url, headers=headers)).read()
-    local_file_path = "dwpdf.pdf"
+    local_file_path = strings.file_paths["local_file_path"]
     with open(local_file_path, "wb") as local_file:
         local_file.write(data)
 
     return local_file_path
 
 def extract_data_from_pdf(pdf_path):
-    # print("pdf path", pdf_path)
-    # Open the PDF file in binary mode
     with open(pdf_path, 'rb') as file:
-        # Create a PDF reader object
-        # pdf = io.BytesIO(pdf_path)
         pdf_reader = pypdf.PdfReader(pdf_path)
-        # pdf = pdftotext.PDF(f)
-
-        # Extract text from each page
         text = ""
         for page_num in range(len(pdf_reader.pages)):
             page = pdf_reader.pages[page_num]
-            text += page.extract_text(extraction_mode="layout")  #try layout mode
+            text += page.extract_text(extraction_mode="layout")
 
-    # print("mmmmmm", text)
     lines = text.splitlines()
     lines = lines[2:]
     lines = lines[:-1]
@@ -41,8 +34,6 @@ def extract_data_from_pdf(pdf_path):
     data = []
     for l in lines:
         if(l != ""):
-            # print("++++++++++", re.split("   ", l))
-
             date_pattern = r'\d{1,2}/\d{1,2}/\d{4} \d{1,2}:\d{2}'
 
             # Find all occurrences of the date pattern in the line
@@ -59,13 +50,10 @@ def extract_data_from_pdf(pdf_path):
                     split_line = re.split("   ", ml)
                     non_empty_list = [value for value in split_line if value is not None and value != ""]
                     if(len(non_empty_list) == 5):
-                        # print("****", non_empty_list[0], non_empty_list[1], non_empty_list[2], non_empty_list[3], non_empty_list[4])
-                        # Define categories
                         categories = ["Date/Time", "Incident Number", "Location", "Nature", "Incident ORI"]
                         date_time = non_empty_list[0].strip()
                         incident_number = non_empty_list[1].strip()
                         location = non_empty_list[2].strip()
-                        # print("NATURE", non_empty_list[3])
                         if(non_empty_list[3] != " "):
                             nature = non_empty_list[3].strip()
                         else: nature = non_empty_list[3]
@@ -82,7 +70,6 @@ def extract_data_from_pdf(pdf_path):
                         # Append the data to the list
                         data.append(extracted_data)
                     else:
-                        # print("IN ELSE", non_empty_list)
                         is_alpha = False
                         nature = ""
                         for entry in non_empty_list:
@@ -90,7 +77,6 @@ def extract_data_from_pdf(pdf_path):
                                 is_alpha = True
                                 nature = entry
 
-                        # print("in here also 44444444", non_empty_list)
                         extracted_data = {
                             'DateTime': "",
                             'IncidentNumber': "",
@@ -107,10 +93,6 @@ def extract_data_from_pdf(pdf_path):
 
                 non_empty_list = [value for value in split_line if value is not None and value != ""]
                 if(len(non_empty_list) == 5):
-                    # print("****", non_empty_list[0], non_empty_list[1], non_empty_list[2], non_empty_list[3], non_empty_list[4])
-
-
-                    # Define categories
                     categories = ["Date/Time", "Incident Number", "Location", "Nature", "Incident ORI"]
                     date_time = non_empty_list[0].strip()
                     incident_number = non_empty_list[1].strip()
@@ -139,7 +121,6 @@ def extract_data_from_pdf(pdf_path):
                             is_alpha = True
                             nature = entry
 
-                    # print("in here also 44444444")
                     extracted_data = {
                         'DateTime': "",
                         'IncidentNumber': "",
@@ -152,82 +133,76 @@ def extract_data_from_pdf(pdf_path):
 
     return data
 
-def connectdb():
-    # Get the path to the 'resources' folder
-    # resources_folder = os.path.join(os.path.dirname(__file__), '/Users/aishwaryatonpe/IdeaProjects/cis6930sp24-assignment0/resources')
-    #
-    # # Ensure that the 'resources' folder exists
-    # os.makedirs(resources_folder, exist_ok=True)
-    #
-    # # Specify the complete path to the SQLite database file
-    # db_path = os.path.join(resources_folder, 'normanpd.db')
+# def extract_fields():
 
-    # Connect to the database
-    con = sqlite3.connect("resources/normanpd.db")
+
+def connectdb():
+    con = sqlite3.connect(strings.dbstrings["db_path"])
     cur = con.cursor()
 
     return (cur, con)
 
 def createdb():
     (cur, con) = connectdb()
-    statement = cur.execute("CREATE TABLE incidents (incident_time TEXT,incident_number TEXT,incident_location TEXT, nature TEXT, incident_ori TEXT)")
+    # statement = cur.execute("CREATE TABLE incidents (incident_time TEXT,incident_number TEXT,incident_location TEXT, nature TEXT, incident_ori TEXT)")
+    statement = cur.execute(strings.dbstrings["create_db"])
     return statement
 
 def populatedb(result : list[dict[str, str]]):
     (cur, con) = connectdb()
-    queryString = "INSERT INTO incidents VALUES "
+    # queryString = "INSERT INTO incidents VALUES "
+    query_string = strings.dbstrings["insert_db"]
     for entry in result:
-        queryString = queryString + "(" + "\'" + entry.get("DateTime") + "\'" + "," +  "\'" + entry.get("IncidentNumber") + "\'" + "," + "\'" + entry.get("Location") + "\'" + "," + "\'" + entry.get("nature") + "\'" + "," + "\'" + entry.get("IncidentType") + "\'" + ")" + ","
+        query_string = query_string + "(" + "\'" + entry.get(strings.field_names["date_time"]) + "\'" + "," +  "\'" + entry.get(strings.field_names["incident_number"]) + "\'" + "," + "\'" + entry.get(strings.field_names["location"]) + "\'" + "," + "\'" + entry.get(strings.field_names["nature"]) + "\'" + "," + "\'" + entry.get(strings.field_names["incident_type"]) + "\'" + ")" + ","
 
-    queryString = queryString[: -1]
+    query_string = query_string[: -1]
 
-    statement = cur.execute(queryString)
+    statement = cur.execute(query_string)
     con.commit()
     return statement.rowcount
 
 def status():
-    queryString = "SELECT nature, COUNT(*) AS nature_count FROM incidents GROUP BY nature"
+    # query_string = "SELECT nature, COUNT(*) AS nature_count FROM incidents GROUP BY nature"
+    query_string = strings.dbstrings["select_db"]
     (cur, con) = connectdb()
-    statement = cur.execute(queryString)
+    statement = cur.execute(query_string)
     data = statement.fetchall()
-    # print("**********", data)
     filtered_data_nature = [entry for entry in data if entry[0] != 'Nature' and entry[0] != 'NATURE' and entry[0] != 'RAMP']
-    # for e in data:
-        # print("77777777", e[0])
     empty_entry = [entry for entry in filtered_data_nature if entry[0] == '']
     filtered_data_empty_entry = [entry for entry in filtered_data_nature if entry[0] != '']
     sorted_data = sorted(filtered_data_empty_entry, key=lambda x: (-x[1], x[0]))
-    # print("empty rntry", empty_entry)
+
     if(len(empty_entry) != 0): sorted_data.append(empty_entry[0])
 
     return sorted_data
 
 def print_status():
     sorted_data = status()
-    # print("^^^^^^^^^", sorted_data)
+    final_str = ""
     for data in sorted_data:
-        # print("******", data)
-        print(data[0] + "|" +  str(data[1]))
+
+        final_str = final_str + data[0] + strings.other["seperator"] +  str(data[1]) + strings.other["new_line"]
+        print(data[0] + strings.other["seperator"] +  str(data[1]))
+
+    return final_str
 
 def getdb():
     (cur, con) = connectdb()
-    statement = cur.execute("SELECT * FROM incidents")
+    statement = cur.execute(strings.dbstrings["select_all_db"])
     return statement.fetchall()
 
 def deletedb():
     (cur, con) = connectdb()
-    statement = cur.execute("DROP TABLE IF EXISTS incidents")
+    statement = cur.execute(strings.dbstrings["drop_table"])
 
 def execute_functions(url):
     pdf = download_data(url)
-    pdf_path = url
     result = extract_data_from_pdf(pdf)
     deletedb()
     createdb()
     populatedb(result)
     print_status()
     delete_pdf(pdf)
-    # getdb()
 
 def delete_pdf(pdf_path):
     try:
@@ -237,25 +212,16 @@ def delete_pdf(pdf_path):
         print(f"PDF file not found: {pdf_path}")
 
 def main():
-    # Create an ArgumentParser object
     parser = argparse.ArgumentParser(description='Process incidents from a given URL.')
-
-    # Add a positional argument for the URL
     parser.add_argument('--incidents', help='URL to fetch incidents data')
-
-    # Parse the command-line arguments
     args = parser.parse_args()
 
-    # Check if the --incidents argument is provided
     if args.incidents:
         url = args.incidents
         execute_functions(url)
-        # Now you can use the 'url' variable in your code
-
-        # Rest of your code here...
 
     else:
-        print("Please provide the --incidents argument with a URL.")
+        print(strings.other["provide_incidents_url"])
 
 if __name__ == "__main__":
     main()

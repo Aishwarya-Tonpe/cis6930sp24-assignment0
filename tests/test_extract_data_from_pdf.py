@@ -1,5 +1,6 @@
 import pytest
 from assignment0.main import createdb, connectdb, deletedb, extract_data_from_pdf
+from assignment0.constants import strings
 
 @pytest.mark.parametrize("pdf_path, expected_count", [
     ("tmp/2024-01-01_daily_incident_summary.pdf", 329),

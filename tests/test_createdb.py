@@ -1,5 +1,6 @@
 import pytest
 from assignment0.main import createdb, connectdb, deletedb
+from assignment0.constants import strings
 
 def test_createdb():
     deletedb()
