@@ -1,7 +1,7 @@
-NAME: AISHWARYA TONPE
+# NAME: AISHWARYA TONPE
 
-ASSIGNMENT DESCRIPTION:
-THIS IS ASSIGNMENT 0 IN THE CIScis6930 DATA ENGINEERING CODE. THE ASSIGNMENT FOCUSES ON EXTRACTING DATA. IN THIS ASSIGNMENT
+# ASSIGNMENT DESCRIPTION:
+THIS IS ASSIGNMENT 0 IN THE CIS6930 DATA ENGINEERING COURSE. THE ASSIGNMENT FOCUSES ON EXTRACTING DATA. IN THIS ASSIGNMENT
 GRAB AN INCIDENTS PDF FILE FORM THE NORMAN, OKLAHAMA POLICE DEPARTMENT'S WEBSITE AND THEN EXTRACT THE DATA FROM THIS PDF
 AND PRINT OUT THE DIFFERENT CATEGORIES OF THE INCIDENTS.
 
@@ -10,9 +10,8 @@ AND PRINT OUT THE DIFFERENT CATEGORIES OF THE INCIDENTS.
 pipenv install
 
 ## How to run
-pipenv run ...
-![video](video)
-
+pipenv run python assignment0/main.py --incidents https://www.normanok.gov/sites/default/files/documents/2024-01/2024-01-08_daily_incident_summary.pdf
+Video -
 
 ## Functions
 #### main.py \
@@ -100,4 +99,5 @@ pipenv run ...
     - This step is usually performed before creating a new table to avoid conflicts.
 
 ## Bugs and Assumptions
-...
+1. It is assumed that the layout of the pdf files will be constant adn it will not change.
+2. It is also assumed that the except the `Nature` field all the other fields are alphanumeric.
