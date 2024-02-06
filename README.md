@@ -107,3 +107,31 @@ https://github.com/Aishwarya-Tonpe/cis6930sp24-assignment0/assets/44273433/c818b
 ## Bugs and Assumptions
 1. It is assumed that the layout of the pdf files will be constant adn it will not change.
 2. It is also assumed that the except the `Nature` field all the other fields are alphanumeric.
+
+## Overview of tests
+1. `test_createdb`:
+   - Deletes the database.
+   - Calls the `createdb` function.
+   - Asserts that the result of the `createdb` function is not `None`.
+   - Asserts that the table named 'incidents' exists in the database.
+
+2. `test_connectdb`:
+   - Calls the `connectdb` function.
+   - Asserts that both the cursor (`cur`) and connection (`con`) are not `None`.
+
+3. `test_print_status`:
+   - Calls the `connectdb` function.
+   - Populates the database using the `populatedb` function.
+   - Calls the `print_status` function.
+   - Asserts that the printed status matches the expected output.
+
+4. `test_populatedb`:
+   - Calls the `connectdb` function.
+   - Calls the `populatedb` function.
+   - Asserts that the count returned by `populatedb` matches the expected count.
+
+5. `test_extract_data_from_pdf`:
+   - Uses `pytest.mark.parametrize` to parameterize the test with different PDF paths and expected counts.
+   - Calls the `extract_data_from_pdf` function with different PDF paths.
+   - Asserts that the length of the result matches the expected count.
+
