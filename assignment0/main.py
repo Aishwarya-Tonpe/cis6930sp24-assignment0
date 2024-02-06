@@ -6,7 +6,7 @@ import sqlite3
 import argparse
 import urllib
 import urllib.request
-from constants import strings
+from assignment0.constants import strings
 
 def download_data(url):
     headers = {}
