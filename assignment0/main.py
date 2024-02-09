@@ -122,17 +122,16 @@ def populatedb(result : list[dict[str, str]]):
     return statement.rowcount
 
 def status():
-    # query_string = "SELECT nature, COUNT(*) AS nature_count FROM incidents GROUP BY nature"
     query_string = strings.dbstrings["select_db"]
     (cur, con) = connectdb()
     statement = cur.execute(query_string)
     data = statement.fetchall()
     filtered_data_nature = [entry for entry in data if entry[0] != 'Nature' and entry[0] != 'NATURE' and entry[0] != 'RAMP']
     empty_entry = [entry for entry in filtered_data_nature if entry[0] == '']
-    filtered_data_empty_entry = [entry for entry in filtered_data_nature if entry[0] != '']
-    sorted_data = sorted(filtered_data_empty_entry, key=lambda x: (-x[1], x[0]))
+    # filtered_data_empty_entry = [entry for entry in filtered_data_nature if entry[0] != '']
+    sorted_data = sorted(filtered_data_nature, key=lambda x: (-x[1], x[0]))
 
-    if(len(empty_entry) != 0): sorted_data.append(empty_entry[0])
+    # if(len(empty_entry) != 0): sorted_data.append(empty_entry[0])
 
     return sorted_data
 
